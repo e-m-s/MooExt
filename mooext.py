@@ -14,18 +14,21 @@ def remove_diacritics(input_str):
 
 
 def main(argv):
-	if len(sys.argv) == 0:
-		print('Usage: mooext file.zip')
+	# Debug only: print(*sys.argv, sep=",")
+	# Debug only: print(len(sys.argv))
+	if len(sys.argv) < 2:
+		print('Missing filename to extract!')
+		print('Usage: python mooext file.zip')
 		exit(2)
 
 	# Get list of all directories
-	zipfilename = argv[1];
-	print('Extracting task solutions from Moodle ZIP file: '+zipfilename);
+	zipfilename = argv[1]
+	print('Extracting task solutions from Moodle ZIP file: '+zipfilename)
 	with zipfile.ZipFile(zipfilename, 'r') as myzip:
 		filelist = myzip.namelist()
 		for file in filelist:
 			blocks = re.match("([^_/]*) ([^_/ ]*)_[^/]*/.*\.(.*)", file)
-			parts = blocks.groups();
+			parts = blocks.groups()
 			newname = parts[1]+"_"+parts[0]+"."+parts[2]
 			newname = newname.lower()
 			newname = remove_diacritics(newname)
